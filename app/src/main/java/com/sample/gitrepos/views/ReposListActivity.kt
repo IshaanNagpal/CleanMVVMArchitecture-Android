@@ -1,9 +1,10 @@
-package com.sample.gitrepos
+package com.sample.gitrepos.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.sample.gitrepos.R
 
-class MainActivity : AppCompatActivity() {
+class ReposListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

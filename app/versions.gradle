@@ -1,0 +1,6 @@
+ext {
+
+    multidexVersion = "2.0.1"
+    retrofitVersion = "2.6.0"
+    koinVersion = "2.0.1"
+}
