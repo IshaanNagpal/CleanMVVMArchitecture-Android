@@ -1,13 +1,15 @@
 package com.sample.gitrepos.repositories
 
-import com.sample.gitrepos.models.GitReposListModel
-import com.sample.gitrepos.network.FetchRepoWebservice
+import com.sample.gitrepos.models.GitReposModel
+import com.sample.gitrepos.network.FetchRepoService
+import org.koin.core.inject
 
-class ReposListRepositoryImpl(private val fetchRepoWebservice: FetchRepoWebservice) : BaseRepository(), ReposListRepository{
+class ReposListRepositoryImpl : BaseRepository(), ReposListRepository{
 
-    override suspend fun getGitRepositories(): GitReposListModel {
-        return  safeApiCall(call = {fetchRepoWebservice.fetchRepositoriesFromURL().await()}, errorMessage = "Error showed up" ) ?: GitReposListModel(
-            mutableListOf())
+
+    val fetchRepoWebservice: FetchRepoService by inject()
+    override suspend fun getGitRepositories(): List<GitReposModel> {
+        return  safeApiCall(call = {fetchRepoWebservice.fetchRepositoriesFromURL().await()}, errorMessage = "Error showed up" ) ?: mutableListOf()
     }
 
 }

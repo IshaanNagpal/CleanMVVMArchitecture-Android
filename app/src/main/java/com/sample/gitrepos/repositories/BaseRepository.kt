@@ -3,8 +3,9 @@ package com.sample.gitrepos.repositories
 import retrofit2.Response
 import java.io.IOException
 import com.sample.gitrepos.network.Result
+import org.koin.core.KoinComponent
 
-open class BaseRepository{
+open class BaseRepository : KoinComponent{
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, errorMessage: String): T? {
 
@@ -18,8 +19,6 @@ open class BaseRepository{
 
             }
         }
-
-
         return data
 
     }

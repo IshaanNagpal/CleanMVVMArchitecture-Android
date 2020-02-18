@@ -1,11 +1,14 @@
 package com.sample.gitrepos.usecases
 
-import com.sample.gitrepos.models.GitReposListModel
-import com.sample.gitrepos.repositories.ReposListRepository
+import com.sample.gitrepos.models.GitReposModel
+import com.sample.gitrepos.repositories.ReposListRepositoryImpl
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class ReposListUsecase(private val repository: ReposListRepository) {
+class ReposListUsecase: KoinComponent {
 
-    suspend fun askGitRepositoriesData(): GitReposListModel {
+    private val repository: ReposListRepositoryImpl by inject()
+    suspend fun askGitRepositoriesData(): List<GitReposModel> {
         return repository.getGitRepositories()
     }
 

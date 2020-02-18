@@ -1,6 +1,8 @@
 package com.sample.gitrepos.modules
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.sample.gitrepos.BuildConfig
+import com.sample.gitrepos.network.FetchRepoService
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -14,7 +16,7 @@ val networkModule = module {
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder().baseUrl(BuildConfig.API_URL).client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()).build()
+        .addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(CoroutineCallAdapterFactory()).build()
 }
 
 fun provideOkHttpClient(): OkHttpClient {

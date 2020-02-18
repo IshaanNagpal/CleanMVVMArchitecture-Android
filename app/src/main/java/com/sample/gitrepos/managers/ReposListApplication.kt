@@ -1,10 +1,7 @@
 package com.sample.gitrepos.managers
 
 import androidx.multidex.MultiDexApplication
-import com.sample.gitrepos.modules.networkModule
-import com.sample.gitrepos.modules.repositoryModule
-import com.sample.gitrepos.modules.usecaseModule
-import com.sample.gitrepos.modules.viewModelModule
+import com.sample.gitrepos.modules.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,7 +12,7 @@ class ReposListApplication : MultiDexApplication() {
 
         startKoin {
             androidContext(this@ReposListApplication)
-            modules(listOf(viewModelModule, repositoryModule, usecaseModule, networkModule))
+            modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule))
         }
     }
 

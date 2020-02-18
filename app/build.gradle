@@ -52,6 +52,7 @@ dependencies {
     //Network
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
 
     //Koin
     implementation "org.koin:koin-android:$koinVersion"
