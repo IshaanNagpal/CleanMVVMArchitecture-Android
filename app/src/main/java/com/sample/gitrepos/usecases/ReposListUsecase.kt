@@ -8,7 +8,7 @@ import org.koin.core.inject
 class ReposListUsecase: KoinComponent {
 
     private val repository: ReposListRepositoryImpl by inject()
-    suspend fun askGitRepositoriesData(): List<GitReposModel> {
+    suspend fun askGitRepositoriesData(): MutableList<GitReposModel> {
         return repository.getGitRepositories()
     }
 

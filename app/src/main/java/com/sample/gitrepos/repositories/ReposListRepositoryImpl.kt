@@ -8,7 +8,7 @@ class ReposListRepositoryImpl : BaseRepository(), ReposListRepository{
 
 
     val fetchRepoWebservice: FetchRepoService by inject()
-    override suspend fun getGitRepositories(): List<GitReposModel> {
+    override suspend fun getGitRepositories(): MutableList<GitReposModel> {
         return  safeApiCall(call = {fetchRepoWebservice.fetchRepositoriesFromURL().await()}, errorMessage = "Error showed up" ) ?: mutableListOf()
     }
 

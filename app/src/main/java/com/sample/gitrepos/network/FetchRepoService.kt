@@ -7,5 +7,5 @@ import retrofit2.http.GET
 
 interface FetchRepoService {
     @GET("repositories")
-    fun fetchRepositoriesFromURL(): Deferred<Response<List<GitReposModel>>>
+    fun fetchRepositoriesFromURL(): Deferred<Response<MutableList<GitReposModel>>>
 }
