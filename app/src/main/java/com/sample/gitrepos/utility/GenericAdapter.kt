@@ -10,7 +10,7 @@ import com.sample.gitrepos.BR
 import java.util.*
 
 
-open class GenericAdapter<T>(var list: List<T>) : ListAdapter<T, GenericViewHolder<*>>(
+open class GenericAdapter<T>(private var list: List<T>) : ListAdapter<T, GenericViewHolder<*>>(
     AsyncDifferConfig.Builder<T>(GenericDiffCallback())
         .build()) {
 

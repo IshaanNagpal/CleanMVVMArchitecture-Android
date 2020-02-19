@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.sample.gitrepos.R
-import com.sample.gitrepos.utility.GenericAdapter
+import com.sample.gitrepos.utility.ExpandAndCollapseAdapter
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.viewmodels.ReposListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ReposListActivity : AppCompatActivity() {
 
     private val reposListViewModel: ReposListViewModel by viewModel()
-    private lateinit var genericAdapter: GenericAdapter<ListItemModel>
+    private lateinit var genericAdapter: ExpandAndCollapseAdapter<ListItemModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class ReposListActivity : AppCompatActivity() {
     private fun configureRecyclerView() {
         repos_recyclerview.layoutManager = LinearLayoutManager(this)
         if (repos_recyclerview.itemAnimator is SimpleItemAnimator)
-            (repos_recyclerview.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            (repos_recyclerview.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = true
         repos_recyclerview.setHasFixedSize(true)
     }
 
@@ -46,10 +46,13 @@ class ReposListActivity : AppCompatActivity() {
 
     private fun setDataOnList(gitReposModelList: List<ListItemModel>) {
         if (!::genericAdapter.isInitialized) {
-            genericAdapter = GenericAdapter(gitReposModelList)
+            genericAdapter = ExpandAndCollapseAdapter(gitReposModelList, null)
             repos_recyclerview.adapter = genericAdapter
         } else {
             genericAdapter.updateItems(gitReposModelList)
         }
     }
+
+
+
 }
