@@ -1,32 +1,44 @@
 package com.sample.gitrepos.repositories
 
-import retrofit2.Response
-import java.io.IOException
-import com.sample.gitrepos.network.Result
+import com.sample.gitrepos.network.Resource
+import com.sample.gitrepos.network.ResourceError
+import okhttp3.ResponseBody
 import org.koin.core.KoinComponent
+import org.koin.core.inject
+import retrofit2.Converter
+import retrofit2.Response
+import retrofit2.Retrofit
 
-open class BaseRepository : KoinComponent{
+open class BaseRepository : KoinComponent {
 
-    suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, errorMessage: String): T? {
 
-        val result : Result<T> = safeApiResult(call,errorMessage)
-        var data : T? = null
+    private val retrofit: Retrofit by inject()
 
-        when(result) {
-            is Result.Success ->
-                data = result.data
-            is Result.Error -> {
+    suspend fun <T> safeApiCall(call: suspend () -> Response<T>): Resource<T> {
 
-            }
+        val response = call.invoke()
+
+        return if (response.isSuccessful) {
+            Resource.success(response.body())
+        } else {
+            Resource.error(parseError(response.errorBody()))
         }
-        return data
-
     }
 
-    private suspend fun <T: Any> safeApiResult(call: suspend ()-> Response<T>, errorMessage: String) : Result<T>{
-        val response = call.invoke()
-        if(response.isSuccessful) return Result.Success(response.body()!!)
 
-        return Result.Error(IOException("Error Occurred during getting safe Api result, Custom ERROR - $errorMessage"))
+    private suspend fun parseError(responseErrorBody: ResponseBody?): ResourceError {
+
+        val converter: Converter<ResponseBody, ResourceError> =
+            retrofit.responseBodyConverter(ResourceError::class.java, arrayOfNulls<Annotation>(0))
+        try {
+            responseErrorBody?.let {
+                return converter.convert(it) ?: ResourceError()
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return ResourceError()
     }
 }
