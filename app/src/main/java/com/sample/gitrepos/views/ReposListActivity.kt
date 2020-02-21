@@ -38,8 +38,8 @@ class ReposListActivity : BaseActivity() {
     private fun fetchRepositories() {
         GlobalScope.launch(Dispatchers.Main) {
             shimmer_view_container.startShimmerAnimation()
-            reposListViewModelImpl.showReposData()
         }
+        reposListViewModelImpl.showReposData()
     }
 
     private fun configurePullToRefresh() {

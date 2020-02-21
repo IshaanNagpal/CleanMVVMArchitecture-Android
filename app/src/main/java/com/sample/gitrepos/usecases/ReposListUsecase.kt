@@ -1,6 +1,5 @@
 package com.sample.gitrepos.usecases
 
-import com.sample.gitrepos.models.GitReposListModel
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.repositories.ReposListRepositoryImpl

@@ -12,7 +12,7 @@ class ReposListApplication : MultiDexApplication() {
 
         startKoin {
             androidContext(this@ReposListApplication)
-            modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule))
+            modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, dbModule))
         }
     }
 
