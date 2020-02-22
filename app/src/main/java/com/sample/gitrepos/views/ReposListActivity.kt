@@ -53,6 +53,7 @@ class ReposListActivity : BaseActivity() {
         reposListViewModelImpl.getReposLiveData().observe(this, Observer {
             it?.let {
                 shimmer_view_container.stopShimmerAnimation()
+                swipe_container.isRefreshing = false
                 setDataOnList(it)
             }
         })

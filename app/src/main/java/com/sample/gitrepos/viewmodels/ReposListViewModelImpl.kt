@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
-import com.sample.gitrepos.usecases.ReposListUsecase
+import com.sample.gitrepos.usecases.ReposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import org.koin.core.inject
 
 class ReposListViewModelImpl(mApplication: Application) : BaseViewModel(mApplication), ReposListViewModel {
 
-    private val reposListUsecase: ReposListUsecase by inject()
+    private val reposListUseCaseImpl: ReposListUseCaseImpl by inject()
     private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
 
 
@@ -29,10 +29,10 @@ class ReposListViewModelImpl(mApplication: Application) : BaseViewModel(mApplica
 
             val reposItemViewList by lazy { mutableListOf<ListItemModel>() }
 
-            when(reposListUsecase.askGitRepositoriesData().status){
+            when(reposListUseCaseImpl.getDataFromRepository().status){
 
                 Resource.Status.SUCCESS -> {
-                    val reposListModel = reposListUsecase.askGitRepositoriesData().data
+                    val reposListModel = reposListUseCaseImpl.getDataFromRepository().data
                     if (reposListModel is MutableList<GitReposModel>) {
                         reposListModel.map {
                             reposItemViewList.add(ReposItemView(it))

@@ -1,4 +1,4 @@
-package com.sample.gitrepos.modules
+package com.sample.gitrepos.dimodules
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.sample.gitrepos.BuildConfig

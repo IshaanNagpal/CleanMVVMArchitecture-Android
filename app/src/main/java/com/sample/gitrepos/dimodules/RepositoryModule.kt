@@ -1,4 +1,4 @@
-package com.sample.gitrepos.modules
+package com.sample.gitrepos.dimodules
 
 import com.sample.gitrepos.repositories.ReposListRepositoryImpl
 import org.koin.dsl.module

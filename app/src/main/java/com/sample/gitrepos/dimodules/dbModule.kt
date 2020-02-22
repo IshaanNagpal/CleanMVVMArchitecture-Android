@@ -1,4 +1,4 @@
-package com.sample.gitrepos.modules
+package com.sample.gitrepos.dimodules
 
 import androidx.room.Room
 import com.sample.gitrepos.persistence.AppDatabase

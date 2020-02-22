@@ -1,4 +1,4 @@
-package com.sample.gitrepos.modules
+package com.sample.gitrepos.dimodules
 
 import com.sample.gitrepos.viewmodels.ReposListViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
