@@ -10,7 +10,7 @@ import com.sample.gitrepos.models.Timestamp
 interface TimestampDao {
 
     @Query("SELECT * from `timestamp`")
-    suspend fun getLastSavedTimeStamp(): Timestamp
+    suspend fun getLastSavedTimeStamp(): Timestamp?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTimeStamp(timestamp: Timestamp)

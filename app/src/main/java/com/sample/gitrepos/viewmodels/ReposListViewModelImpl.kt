@@ -29,10 +29,12 @@ class ReposListViewModelImpl(mApplication: Application) : BaseViewModel(mApplica
 
             val reposItemViewList by lazy { mutableListOf<ListItemModel>() }
 
-            when(reposListUseCaseImpl.getDataFromRepository().status){
+            val reposResource = reposListUseCaseImpl.getDataFromRepository()
+
+            when (reposResource.status) {
 
                 Resource.Status.SUCCESS -> {
-                    val reposListModel = reposListUseCaseImpl.getDataFromRepository().data
+                    val reposListModel = reposResource.data
                     if (reposListModel is MutableList<GitReposModel>) {
                         reposListModel.map {
                             reposItemViewList.add(ReposItemView(it))
@@ -41,6 +43,8 @@ class ReposListViewModelImpl(mApplication: Application) : BaseViewModel(mApplica
                         setSuccess()
                     }
                 }
+
+                Resource.Status.ERROR -> { setError()}
 
             }
 
