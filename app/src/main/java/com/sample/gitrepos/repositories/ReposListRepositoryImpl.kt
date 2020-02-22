@@ -10,8 +10,7 @@ import com.sample.gitrepos.persistence.TimestampDao
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
 import org.koin.core.inject
 
-class ReposListRepositoryImpl(private val reposDao: ReposDao, private val timestampDao: TimestampDao
-) : BaseRepository(), ReposListRepository {
+class ReposListRepositoryImpl(private val reposDao: ReposDao, private val timestampDao: TimestampDao) : BaseRepository(), ReposListRepository {
 
     private val fetchRepoWeatherWebservice: FetchRepoAPIService by inject()
 
@@ -29,8 +28,7 @@ class ReposListRepositoryImpl(private val reposDao: ReposDao, private val timest
     }
 
     private suspend fun getLastSavedTimeStamp(): Long {
-        val lastTime = timestampDao.getLastSavedTimeStamp()?.timesTamp ?: 0
-        return lastTime
+        return timestampDao.getLastSavedTimeStamp()?.timesTamp ?: 0
     }
 
 }
