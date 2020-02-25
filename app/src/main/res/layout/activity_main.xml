@@ -2,7 +2,9 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
 
     <data>
 
@@ -26,6 +28,7 @@
             layout="@layout/error_state"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            bind:viewModel="@{viewModel}"
             android:visibility="@{viewModel.isErrorState() ? View.VISIBLE: View.GONE, default=gone}"
             />
 

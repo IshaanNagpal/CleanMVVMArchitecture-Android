@@ -23,7 +23,7 @@ class ReposListViewModelImplTest {
     fun `when repository provides success`() {
         repositoryImpl = mock()
         runBlocking {
-            whenever(repositoryImpl.getGitRepositories()).thenReturn(successResource) }
+            whenever(repositoryImpl.getGitRepositories(isForceFetch)).thenReturn(successResource) }
     }
 
 
@@ -31,6 +31,6 @@ class ReposListViewModelImplTest {
     fun `when repository provides error`() {
         repositoryImpl = mock()
         runBlocking {
-            whenever(repositoryImpl.getGitRepositories()).thenReturn(errorResource) }
+            whenever(repositoryImpl.getGitRepositories(isForceFetch)).thenReturn(errorResource) }
     }
 }

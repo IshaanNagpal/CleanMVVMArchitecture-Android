@@ -12,8 +12,8 @@ class ReposListResposListUseCaseImpl(private val repository: ReposListRepository
        return repository.getReposResponseLiveData()
     }
 
-    override suspend fun getDataFromRepository() {
-        return repository.getGitRepositories()
+    override suspend fun getDataFromRepository(isForceFetch: Boolean) {
+        return repository.getGitRepositories(isForceFetch)
     }
 
 }

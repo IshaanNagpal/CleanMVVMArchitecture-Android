@@ -54,7 +54,7 @@ class ReposListActivity : BaseActivity() {
 
     private fun configurePullToRefresh() {
         swipe_container.setOnRefreshListener {
-            fetchRepositories()
+            reposListViewModelImpl.swipeToRefreshCalled()
         }
     }
 

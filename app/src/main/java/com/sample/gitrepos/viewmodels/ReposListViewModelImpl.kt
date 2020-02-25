@@ -1,7 +1,9 @@
 package com.sample.gitrepos.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.sample.gitrepos.managers.ReposListApplication
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.usecases.ReposListResposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
@@ -10,7 +12,7 @@ import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListResposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
+class ReposListViewModelImpl(private val mApplication: ReposListApplication, private val reposListUseCaseImpl: ReposListResposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
 
     private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
 
@@ -41,10 +43,13 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
         }
     }
 
-    fun showReposData() {
+    fun showReposData(forceFetch: Boolean = false) {
         viewModelScope.launch(Dispatchers.Main) {
-            reposListUseCaseImpl.getDataFromRepository()
+            reposListUseCaseImpl.getDataFromRepository(forceFetch)
         }
     }
 
+    fun swipeToRefreshCalled() {
+        showReposData(true)
+    }
 }

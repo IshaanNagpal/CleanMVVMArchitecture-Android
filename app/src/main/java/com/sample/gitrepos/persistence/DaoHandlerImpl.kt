@@ -13,6 +13,7 @@ class DaoHandlerImpl(private val reposDao: ReposDao, private val timestampDao: T
     }
 
     override suspend fun addReposDataIntoDB(gitReposModelList: MutableList<GitReposModel>) {
+        reposDao.deleteAllRepositories()
         reposDao.insertRepositories(gitReposModelList)
     }
 
@@ -21,6 +22,7 @@ class DaoHandlerImpl(private val reposDao: ReposDao, private val timestampDao: T
     }
 
     override suspend fun addTimeStampInDB(timestamp: Timestamp) {
+        timestampDao.deleteTimeStamp()
         timestampDao.insertTimeStamp(timestamp)
     }
 }

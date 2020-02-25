@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.koin.core.KoinComponent
 
-open class BaseViewModel(application: Application) : AndroidViewModel(application), KoinComponent {
+open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private val loadingStateLiveData by lazy { ObservableField<Boolean>() }

@@ -14,4 +14,7 @@ interface TimestampDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTimeStamp(timestamp: Timestamp)
+
+    @Query("DELETE from `timestamp`")
+    suspend fun deleteTimeStamp()
 }

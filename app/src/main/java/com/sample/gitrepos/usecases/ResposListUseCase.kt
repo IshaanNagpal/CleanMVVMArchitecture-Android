@@ -6,5 +6,5 @@ import com.sample.gitrepos.network.Resource
 
 interface ResposListUseCase {
     fun subscribeForReposData(): MutableLiveData<Resource<MutableList<GitReposModel>>>
-    suspend fun getDataFromRepository()
+    suspend fun getDataFromRepository(isForceFetch: Boolean = false)
 }

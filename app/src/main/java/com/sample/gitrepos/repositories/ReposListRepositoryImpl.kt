@@ -19,12 +19,13 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
         return fetchCompleteLiveData
     }
 
-    override suspend fun getGitRepositories() {
+    override suspend fun getGitRepositories(forceFetch: Boolean) {
 
         fetchCompleteLiveData.postValue(Resource.loading(null))
         delay(3000) //To show shimmer for 3s at least
 
-          if (!daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() &&  System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
+
+        if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() &&  System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
               fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
         } else {
               val resource = safeApiCall(call = { fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await() })
