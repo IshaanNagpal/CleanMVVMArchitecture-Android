@@ -4,15 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activityPadding"
     tools:context=".views.ReposListActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <ImageView
+        android:id="@+id/error_imageview"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:src="@drawable/nointernet_connection"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/error_title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activityPadding"
+        android:gravity="center_horizontal"
+        android:text="@string/error_title"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/error_imageview"
+        tools:text="Something went wrong.." />
+
+    <TextView
+        android:id="@+id/error_subtitle_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_10"
+        android:gravity="center_horizontal"
+        android:text="@string/error_subtitle"
+        app:layout_constraintTop_toBottomOf="@id/error_title_textview"
+        tools:text="Probably an alien is blocking your connection" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retry_button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_10"
+        android:layout_marginRight="@dimen/padding_10"
+        android:backgroundTint="@android:color/white"
+        android:padding="@dimen/activityPadding"
+        android:text="RETRY"
+        android:textColor="@color/green_button_border"
+        android:textSize="15sp"
+        app:cornerRadius="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="#33AAAAAA"
+        app:strokeColor="@color/green_button_border"
+        app:strokeWidth="2dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
