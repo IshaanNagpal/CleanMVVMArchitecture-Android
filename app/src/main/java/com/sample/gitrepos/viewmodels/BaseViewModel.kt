@@ -20,11 +20,6 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
     fun isErrorState(): ObservableField<Boolean> = errorStateLiveData
 
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
-
     fun setSuccess() {
         loadingStateLiveData.set(false)
         successStateLiveData.set(true)

@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.sample.gitrepos.R
 import com.sample.gitrepos.databinding.ActivityMainBinding
@@ -12,9 +13,7 @@ import com.sample.gitrepos.utility.ExpandAndCollapseAdapter
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.viewmodels.ReposListViewModelImpl
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -26,17 +25,28 @@ class ReposListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        mBinding.viewModel = reposListViewModelImpl
+        configureBinding()
         configureRecyclerView()
         configurePullToRefresh()
+    }
+
+    override fun addObservers() {
         registerObservers()
+    }
+
+    private fun configureBinding() {
+        mBinding.viewModel = reposListViewModelImpl
+        mBinding.lifecycleOwner = this
+    }
+
+    override fun onStart() {
+        super.onStart()
         fetchRepositories()
     }
 
     private fun fetchRepositories() {
-        GlobalScope.launch(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.Main).launch {
             shimmer_view_container.startShimmerAnimation()
         }
         reposListViewModelImpl.showReposData()
@@ -61,12 +71,11 @@ class ReposListActivity : BaseActivity() {
 
     private fun configureRecyclerView() {
         repos_recyclerview.layoutManager = LinearLayoutManager(this)
-        repos_recyclerview.addItemDecoration(DividerItemDecoration(repos_recyclerview.context, 1))
+        repos_recyclerview.addItemDecoration(DividerItemDecoration(repos_recyclerview.context, OrientationHelper.VERTICAL))
         if (repos_recyclerview.itemAnimator is SimpleItemAnimator)
             (repos_recyclerview.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = true
         repos_recyclerview.setHasFixedSize(true)
     }
-
 
 
     private fun setDataOnList(gitReposModelList: List<ListItemModel>) {
@@ -78,6 +87,10 @@ class ReposListActivity : BaseActivity() {
         }
     }
 
+
+    override fun removeObservers() {
+        reposListViewModelImpl.getReposLiveData().removeObservers(this)
+    }
 
 
 }

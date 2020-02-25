@@ -8,6 +8,7 @@ import com.sample.gitrepos.network.FetchRepoAPIService
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.persistence.DaoHandlerImpl
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
+import kotlinx.coroutines.delay
 
 class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoAPIService, private val daoHandlerImpl: DaoHandlerImpl) : BaseRepository(),
     ReposListRepository {
@@ -19,6 +20,10 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
     }
 
     override suspend fun getGitRepositories() {
+
+        fetchCompleteLiveData.postValue(Resource.loading(null))
+        delay(3000) //To show shimmer for 3s at least
+
           if (!daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() &&  System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
               fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
         } else {
