@@ -17,7 +17,7 @@ class DaoHandlerImpl(private val reposDao: ReposDao, private val timestampDao: T
     }
 
     override suspend fun getTimeStampFromDB(): Timestamp  {
-        return timestampDao.getLastSavedTimeStamp()
+        return timestampDao.getLastSavedTimeStamp() ?: Timestamp(System.currentTimeMillis())
     }
 
     override suspend fun addTimeStampInDB(timestamp: Timestamp) {
