@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "repositories")
 data class GitReposModel(
+    //Since there is no eligible candidate for being PrimaryKey, 'author' field is made primary for sake of table validation to have atleast one.
     @PrimaryKey
     @field:SerializedName("author")
     val author: String,

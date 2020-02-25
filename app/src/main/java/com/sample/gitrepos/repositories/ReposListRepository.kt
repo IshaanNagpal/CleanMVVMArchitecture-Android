@@ -1,8 +1,10 @@
 package com.sample.gitrepos.repositories
 
+import androidx.lifecycle.MutableLiveData
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 
 interface ReposListRepository{
-    suspend fun  getGitRepositories() : Resource<MutableList<GitReposModel>>
+    suspend fun  getGitRepositories()
+    fun getReposResponseLiveData(): MutableLiveData<Resource<MutableList<GitReposModel>>>
 }

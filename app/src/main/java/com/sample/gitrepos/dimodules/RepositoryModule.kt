@@ -5,5 +5,4 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single { ReposListRepositoryImpl(get(), get()) }
-    factory {  }
 }

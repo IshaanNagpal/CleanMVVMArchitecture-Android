@@ -9,8 +9,7 @@ import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
 
-open class BaseRepository : KoinComponent {
-
+open class BaseRepository: KoinComponent {
 
     private val retrofit: Retrofit by inject()
 
@@ -26,7 +25,7 @@ open class BaseRepository : KoinComponent {
     }
 
 
-    private suspend fun parseError(responseErrorBody: ResponseBody?): ResourceError {
+    private fun parseError(responseErrorBody: ResponseBody?): ResourceError {
 
         val converter: Converter<ResponseBody, ResourceError> =
             retrofit.responseBodyConverter(ResourceError::class.java, arrayOfNulls<Annotation>(0))
