@@ -1,5 +1,6 @@
 package com.sample.gitrepos.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,7 @@ import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ReposListViewModelImpl(private val mApplication: ReposListApplication, private val reposListUseCaseImpl: ReposListResposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
+class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListResposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
 
     private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
 
@@ -25,7 +26,6 @@ class ReposListViewModelImpl(private val mApplication: ReposListApplication, pri
     private fun observeForReposResponseLiveData() {
         reposListUseCaseImpl.subscribeForReposData().observeForever {
             when(it.status) {
-
                 Resource.Status.LOADING -> {setLoading()}
 
                 Resource.Status.SUCCESS -> {

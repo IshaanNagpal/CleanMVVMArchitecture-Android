@@ -6,7 +6,9 @@ import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.models.Timestamp
 import com.sample.gitrepos.network.FetchRepoAPIService
 import com.sample.gitrepos.network.Resource
+import com.sample.gitrepos.network.ResourceError
 import com.sample.gitrepos.persistence.DaoHandlerImpl
+import com.sample.gitrepos.utility.ConnectionUtility
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
 import kotlinx.coroutines.delay
 
@@ -25,12 +27,23 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
         delay(3000) //To show shimmer for 3s at least
 
 
-        if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() &&  System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
-              fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
+        if(!ConnectionUtility.isInternetAvailable()) {
+            if(daoHandlerImpl.getReposDataFromDB().isNullOrEmpty()) {
+                fetchCompleteLiveData.postValue(Resource.error(ResourceError()))
+            } else{
+                fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
+            }
+            
         } else {
-              val resource = safeApiCall(call = { fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await() })
-              updateDatabase(resource)
-              fetchCompleteLiveData.value = resource
+            if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() && System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
+                fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
+            } else {
+                val resource = safeApiCall(call = {
+                    fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await()
+                })
+                updateDatabase(resource)
+                fetchCompleteLiveData.value = resource
+            }
         }
     }
 
