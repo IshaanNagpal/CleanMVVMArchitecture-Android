@@ -4,16 +4,15 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.sample.gitrepos.managers.ReposListApplication
 import com.sample.gitrepos.network.Resource
-import com.sample.gitrepos.usecases.ReposListResposListUseCaseImpl
+import com.sample.gitrepos.usecases.ReposListReposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.utility.REPOS_ACTIVITY_STATE
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListResposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
+class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListReposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
 
     private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
 

@@ -1,8 +1,8 @@
 package com.sample.gitrepos.dimodules
 
-import com.sample.gitrepos.usecases.ReposListResposListUseCaseImpl
+import com.sample.gitrepos.usecases.ReposListReposListUseCaseImpl
 import org.koin.dsl.module
 
 val usecaseModule = module {
-    factory { ReposListResposListUseCaseImpl(get()) }
+    factory { ReposListReposListUseCaseImpl(get()) }
 }

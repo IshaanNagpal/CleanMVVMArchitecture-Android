@@ -65,9 +65,9 @@ dependencies {
     implementation "org.koin:koin-core:$koinVersion"
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.2.3'
-    kapt 'androidx.room:room-compiler:2.2.3'
-    implementation 'androidx.room:room-ktx:2.2.3'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
 
     //TEST

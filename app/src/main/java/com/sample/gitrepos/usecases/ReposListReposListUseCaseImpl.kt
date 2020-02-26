@@ -6,7 +6,7 @@ import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.repositories.ReposListRepositoryImpl
 
-class ReposListResposListUseCaseImpl(private val repository: ReposListRepositoryImpl) : ResposListUseCase {
+class ReposListReposListUseCaseImpl(private val repository: ReposListRepositoryImpl) : ResposListUseCase {
 
     override fun subscribeForReposData(): MutableLiveData<Resource<MutableList<GitReposModel>>> {
        return repository.getReposResponseLiveData()
