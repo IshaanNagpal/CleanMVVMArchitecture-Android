@@ -2,7 +2,7 @@ package com.sample.gitrepos.network
 
 class Resource<T>(val status: Status, val data: T?, val resourceError: ResourceError?) {
     enum class Status {
-        SUCCESS, ERROR, LOADING
+        SUCCESS, ERROR
     }
 
     companion object {
@@ -14,8 +14,8 @@ class Resource<T>(val status: Status, val data: T?, val resourceError: ResourceE
             return Resource(Status.ERROR, null, resourceError)
         }
 
-        fun <T> loading(data: T?): Resource<T> {
-            return Resource(Status.LOADING, data, null)
-        }
+//        fun <T> loading(): Resource<T> {
+//            return Resource(Status.LOADING, null, null)
+//        }
     }
 }

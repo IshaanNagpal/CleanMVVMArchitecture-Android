@@ -63,7 +63,7 @@
         android:textColor="@color/green_button_border"
         android:textSize="15sp"
         app:cornerRadius="4dp"
-        android:onClick="@{() -> viewModel.showReposData(true)}"
+        android:onClick="@{() -> viewModel.getReposData(true)}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

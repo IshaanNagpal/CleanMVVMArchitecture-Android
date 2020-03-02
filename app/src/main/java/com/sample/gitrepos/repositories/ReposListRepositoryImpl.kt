@@ -1,7 +1,6 @@
 package com.sample.gitrepos.repositories
 
 
-import androidx.lifecycle.MutableLiveData
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.models.Timestamp
 import com.sample.gitrepos.network.FetchRepoAPIService
@@ -10,39 +9,28 @@ import com.sample.gitrepos.network.ResourceError
 import com.sample.gitrepos.persistence.DaoHandlerImpl
 import com.sample.gitrepos.utility.ConnectionUtility
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
-import kotlinx.coroutines.delay
 
 class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoAPIService, private val daoHandlerImpl: DaoHandlerImpl) : BaseRepository(),
     ReposListRepository {
 
-    private val fetchCompleteLiveData by lazy { MutableLiveData<Resource<MutableList<GitReposModel>>>() }
 
-    override fun getReposResponseLiveData(): MutableLiveData<Resource<MutableList<GitReposModel>>> {
-        return fetchCompleteLiveData
-    }
-
-    override suspend fun getGitRepositories(forceFetch: Boolean) {
-
-        fetchCompleteLiveData.postValue(Resource.loading(null))
-        delay(3000) //To show shimmer for 3s at least
-
-
+    override suspend fun getGitRepositories(forceFetch: Boolean): Resource<MutableList<GitReposModel>> {
         if(!ConnectionUtility.isInternetAvailable()) {
-            if(daoHandlerImpl.getReposDataFromDB().isNullOrEmpty()) {
-                fetchCompleteLiveData.postValue(Resource.error(ResourceError()))
+            return if(daoHandlerImpl.getReposDataFromDB().isNullOrEmpty()) {
+                Resource.error(ResourceError())
             } else{
-                fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
+                Resource.success(daoHandlerImpl.getReposDataFromDB())
             }
-            
+
         } else {
-            if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() && System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
-                fetchCompleteLiveData.value = Resource.success(daoHandlerImpl.getReposDataFromDB())
+            return if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() && System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
+                Resource.success(daoHandlerImpl.getReposDataFromDB())
             } else {
-                val resource = safeApiCall(call = {
-                    fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await()
-                })
-                updateDatabase(resource)
-                fetchCompleteLiveData.value = resource
+                val resource = safeApiCall(call = { fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await() })
+                if(resource.status == Resource.Status.SUCCESS) {
+                    updateDatabase(resource)
+                }
+                resource
             }
         }
     }

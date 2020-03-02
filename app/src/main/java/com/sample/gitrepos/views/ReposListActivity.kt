@@ -35,25 +35,31 @@ class ReposListActivity : BaseActivity() {
         registerObservers()
     }
 
-    private fun configureBinding() {
-        mBinding.viewModel = reposListViewModelImpl
-        mBinding.lifecycleOwner = this
-    }
-
     override fun onStart() {
         super.onStart()
         fetchRepositories()
     }
 
+    private fun configureBinding() {
+        mBinding.viewModel = reposListViewModelImpl
+        mBinding.lifecycleOwner = this
+    }
+
+
     private fun fetchRepositories() {
+        startShimmerAnimation()
+        reposListViewModelImpl.getReposData()
+    }
+
+    private fun startShimmerAnimation() {
         CoroutineScope(Dispatchers.Main).launch {
             shimmer_view_container.startShimmerAnimation()
         }
-        reposListViewModelImpl.showReposData()
     }
 
     private fun configurePullToRefresh() {
         swipe_container.setOnRefreshListener {
+            startShimmerAnimation()
             reposListViewModelImpl.swipeToRefreshCalled()
         }
     }

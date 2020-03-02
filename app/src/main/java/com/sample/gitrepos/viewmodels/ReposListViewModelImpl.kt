@@ -4,51 +4,63 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
-import com.sample.gitrepos.usecases.ReposListReposListUseCaseImpl
+import com.sample.gitrepos.usecases.ReposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.utility.REPOS_ACTIVITY_STATE
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListReposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) : BaseViewModel(mApplication), ReposListViewModel {
+/**
+ * This ViewModel class is responsible for maintaining the Business Logic for the Git Repos Screen
+ */
+class ReposListViewModelImpl(
+    mApplication: Application,
+    private val reposListUseCaseImpl: ReposListUseCaseImpl,
+    private val savedStateHandle: SavedStateHandle
+) :
+    BaseViewModel(mApplication), ReposListViewModel {
 
+    //This live data to be listened by view as the owner is Viewmodel
     private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
 
-    override fun getReposLiveData(): MutableLiveData<List<ListItemModel>> = savedStateHandle.getLiveData(REPOS_ACTIVITY_STATE)
+    override fun getReposLiveData(): MutableLiveData<List<ListItemModel>> =
+        savedStateHandle.getLiveData(REPOS_ACTIVITY_STATE)
 
-    init {
-        observeForReposResponseLiveData()
-    }
 
-    private fun observeForReposResponseLiveData() {
-        reposListUseCaseImpl.subscribeForReposData().observeForever {
-            when(it.status) {
-                Resource.Status.LOADING -> {setLoading()}
-
+    fun getReposData(forceFetch: Boolean = false) {
+        setLoading()
+        viewModelScope.launch(Dispatchers.Main) {
+            delay(3000) //Delay added to show shimmer for 3s
+            val resource = reposListUseCaseImpl.getDataFromRepository(forceFetch)
+            when (resource.status) {
                 Resource.Status.SUCCESS -> {
-                    val reposItemViewList by lazy { mutableListOf<ListItemModel>() }
-                    val reposListModel = it.data
-                    reposListModel?.map { gitReposModel -> reposItemViewList.add(ReposItemView(gitReposModel))
-                        savedStateHandle.set(REPOS_ACTIVITY_STATE,reposItemViewList)
-                        reposListLiveData.postValue(reposItemViewList)
-                        setSuccess()
-                    }
+                    val reposItemViewList = getItemViewsFromData(resource.data)
+                    savedStateHandle.set(REPOS_ACTIVITY_STATE, reposItemViewList)
+                    reposListLiveData.postValue(reposItemViewList)
+                    setSuccess()
                 }
 
-                Resource.Status.ERROR -> {setError()}
+                Resource.Status.ERROR -> {
+                    setError()
+                }
             }
         }
     }
 
-    fun showReposData(forceFetch: Boolean = false) {
-        viewModelScope.launch(Dispatchers.Main) {
-            reposListUseCaseImpl.getDataFromRepository(forceFetch)
+    private fun getItemViewsFromData(reposList: MutableList<GitReposModel>?): List<ListItemModel> {
+        val reposItemViewList = mutableListOf<ListItemModel>()
+        reposList?.map { gitReposModel ->
+            reposItemViewList.add(ReposItemView(gitReposModel))
         }
+        return reposItemViewList
     }
 
     fun swipeToRefreshCalled() {
-        showReposData(true)
+        getReposData(true)
     }
+
 }
