@@ -3,6 +3,7 @@ package com.sample.gitrepos.utility
 import android.view.View
 import com.sample.gitrepos.R
 
+
 class ExpandAndCollapseAdapter<T>(list: List<T>, private val onRowClick: ((Int)->Unit)?) : GenericAdapter<T>(list) {
 
     private var mExpandedPosition = -1
@@ -12,12 +13,12 @@ class ExpandAndCollapseAdapter<T>(list: List<T>, private val onRowClick: ((Int)-
         super.onBindViewHolder(holder, position)
 
 
-        val actionVGroup = holder.getBinding()!!.root.findViewById<View>(R.id.container_layout)
+        val actionVGroup = holder.getBinding().root.findViewById<View>(R.id.container_layout)
 
         if (actionVGroup != null) {
 
-            val expandViewGroup = holder.getBinding()!!.root.findViewById<View>(R.id.info_container_layout)
-            val actionVGroup = holder.getBinding()!!.root.findViewById<View>(R.id.container_layout)
+            val expandViewGroup = holder.getBinding().root.findViewById<View>(R.id.info_container_layout)
+            val actionVGroup = holder.getBinding().root.findViewById<View>(R.id.container_layout)
 
             if (mExpandedPosition == position) {
                 expandViewGroup.visibility = View.VISIBLE
@@ -38,10 +39,8 @@ class ExpandAndCollapseAdapter<T>(list: List<T>, private val onRowClick: ((Int)-
                         mExpandedPosition = position
                         expandViewGroup.visibility = View.VISIBLE
                     }
-                    notifyDataSetChanged()
                 }
             }
         }
     }
-
 }

@@ -17,11 +17,7 @@ import kotlinx.coroutines.launch
 /**
  * This ViewModel class is responsible for maintaining the Business Logic for the Git Repos Screen
  */
-class ReposListViewModelImpl(
-    mApplication: Application,
-    private val reposListUseCaseImpl: ReposListUseCaseImpl,
-    private val savedStateHandle: SavedStateHandle
-) :
+class ReposListViewModelImpl(mApplication: Application, private val reposListUseCaseImpl: ReposListUseCaseImpl, private val savedStateHandle: SavedStateHandle) :
     BaseViewModel(mApplication), ReposListViewModel {
 
     //This live data to be listened by view as the owner is Viewmodel
@@ -36,7 +32,9 @@ class ReposListViewModelImpl(
         viewModelScope.launch(Dispatchers.Main) {
             delay(3000) //Delay added to show shimmer for 3s
             val resource = reposListUseCaseImpl.getDataFromRepository(forceFetch)
+
             when (resource.status) {
+
                 Resource.Status.SUCCESS -> {
                     val reposItemViewList = getItemViewsFromData(resource.data)
                     savedStateHandle.set(REPOS_ACTIVITY_STATE, reposItemViewList)

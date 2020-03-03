@@ -16,7 +16,7 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
 
     override suspend fun getGitRepositories(forceFetch: Boolean): Resource<MutableList<GitReposModel>> {
         if(!ConnectionUtility.isInternetAvailable()) {
-            return if(daoHandlerImpl.getReposDataFromDB().isNullOrEmpty()) {
+            return if(daoHandlerImpl.isReposDBEmpty()) {
                 Resource.error(ResourceError())
             } else{
                 Resource.success(daoHandlerImpl.getReposDataFromDB())

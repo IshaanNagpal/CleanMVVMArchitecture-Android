@@ -13,9 +13,5 @@ class Resource<T>(val status: Status, val data: T?, val resourceError: ResourceE
         fun <T> error(resourceError: ResourceError?): Resource<T> {
             return Resource(Status.ERROR, null, resourceError)
         }
-
-//        fun <T> loading(): Resource<T> {
-//            return Resource(Status.LOADING, null, null)
-//        }
     }
 }

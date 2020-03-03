@@ -16,8 +16,8 @@
         android:id="@+id/container_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:animateLayoutChanges="true"
+        android:padding="16dp"
         tools:context=".views.ReposListActivity">
 
 
@@ -29,7 +29,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:imageUrl="@{listItemModel.imageUrl}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,9 +36,9 @@
             android:id="@+id/author_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:text="@{listItemModel.author}"
             app:layout_constraintLeft_toRightOf="@id/user_imageview"
             app:layout_constraintRight_toRightOf="parent"
@@ -50,13 +49,13 @@
             android:id="@+id/repo_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="0dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:text="@{listItemModel.repoName}"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="@{listItemModel.repoName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/user_imageview"
             app:layout_constraintRight_toRightOf="parent"
@@ -65,49 +64,48 @@
             tools:text="Repo Name" />
 
 
-
         <LinearLayout
             android:id="@+id/info_container_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:weightSum="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/repo_name"
-            app:layout_constraintVertical_bias="0.0"
-            android:layout_marginTop="16dp"
-            android:weightSum="3"
-            android:visibility="gone"
-            >
+            app:layout_constraintVertical_bias="0.0">
 
             <TextView
                 android:id="@+id/language"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Lang"
                 android:layout_weight="1"
                 android:text="@{listItemModel.langauge}"
-                />
+                tools:text="Lang" />
 
 
             <TextView
                 android:id="@+id/stars"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Stars"
                 android:layout_weight="1"
+                android:drawablePadding="@dimen/padding_10"
+                android:drawableStart="@drawable/star"
                 android:text="@{listItemModel.stars}"
-                />
+                tools:text="Stars" />
 
             <TextView
                 android:id="@+id/forks"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Forks"
                 android:layout_weight="1"
+                android:drawablePadding="@dimen/padding_10"
+                android:drawableStart="@drawable/fork"
                 android:text="@{listItemModel.forks}"
-                />
+                tools:text="Forks" />
 
 
         </LinearLayout>
