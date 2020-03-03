@@ -1,36 +1,56 @@
 package com.sample.gitrepos.viewmodels
 
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+
+import com.nhaarman.mockito_kotlin.given
+import com.nhaarman.mockito_kotlin.verify
+import com.sample.gitrepos.BaseTest
+import com.sample.gitrepos.CoroutineTest
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.network.ResourceError
-import com.sample.gitrepos.repositories.ReposListRepositoryImpl
+import com.sample.gitrepos.usecases.ReposListUseCaseImpl
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.inject
+import org.koin.test.mock.declareMock
+import org.mockito.junit.MockitoJUnitRunner
+import org.robolectric.RobolectricTestRunner
 
-class ReposListViewModelImplTest {
 
-    private lateinit var reposListViewModel: ReposListViewModel
-    private lateinit var repositoryImpl: ReposListRepositoryImpl
-//    private lateinit var weatherObserver: Observer<Resource<Weather>>
+@RunWith(RobolectricTestRunner::class)
+class ReposListViewModelImplTest : CoroutineTest() {
+
+    private val reposListViewModelImpl: ReposListViewModelImpl by inject()
+    private val reposListUseCaseImpl: ReposListUseCaseImpl = declareMock {  }
+    private val errorResource = Resource.error<ResourceError>(ResourceError())
     private val successResource = Resource.success(mutableListOf<GitReposModel>())
-    private val errorResource: Resource<ResourceError> = Resource.error(ResourceError())
-
-
 
     @Test
-    fun `when repository provides success`() {
-        repositoryImpl = mock()
-        runBlocking {
-            whenever(repositoryImpl.getGitRepositories(isForceFetch)).thenReturn(successResource) }
+    fun `is fetchResponseLiveData is holding value`() {
+        reposListViewModelImpl.getReposLiveData().value = listOf()
+        Assert.assertTrue((reposListViewModelImpl.getReposLiveData().value as List).isEmpty())
     }
 
 
     @Test
-    fun `when repository provides error`() {
-        repositoryImpl = mock()
+    fun `verify for viewmodel calling usecase will return success`() {
+
         runBlocking {
-            whenever(repositoryImpl.getGitRepositories(isForceFetch)).thenReturn(errorResource) }
+
+            //Given
+            given(reposListUseCaseImpl.getDataFromRepository( true)).will{ successResource }
+            given(reposListUseCaseImpl.getDataFromRepository(false)).will{ errorResource }
+            //When
+            val successResource = reposListUseCaseImpl.getDataFromRepository(true)
+            val errorResource = reposListUseCaseImpl.getDataFromRepository(false)
+            //Then
+            verify(reposListUseCaseImpl).getDataFromRepository(true)
+            Assert.assertTrue(successResource.status == Resource.Status.SUCCESS)
+            Assert.assertTrue(errorResource.status == Resource.Status.ERROR)
+        }
     }
+
+
 }
