@@ -15,25 +15,31 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
 
 
     override suspend fun getGitRepositories(forceFetch: Boolean): Resource<MutableList<GitReposModel>> {
-        if(!ConnectionUtility.isInternetAvailable()) {
-            return if(daoHandlerImpl.isReposDBEmpty()) {
-                Resource.error(ResourceError())
-            } else{
-                Resource.success(daoHandlerImpl.getReposDataFromDB())
-            }
-
+        return if (!isCacheStale() && !forceFetch) {                                           //First check for cache is stale or force fetch is required
+            if (daoHandlerImpl.isReposDBEmpty()) Resource.error(ResourceError())
+            else Resource.success(daoHandlerImpl.getReposDataFromDB())
         } else {
-            return if (!forceFetch && !daoHandlerImpl.getReposDataFromDB().isNullOrEmpty() && System.currentTimeMillis() - getLastSavedTimeStamp() < TWO_HOURS_MILLIS) {
-                Resource.success(daoHandlerImpl.getReposDataFromDB())
-            } else {
-                val resource = safeApiCall(call = { fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await() })
-                if(resource.status == Resource.Status.SUCCESS) {
+            if (ConnectionUtility.isInternetAvailable()) {
+                val resource = safeApiCall(call = {
+                    fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await()
+                })
+                if (resource.status == Resource.Status.SUCCESS) {
                     updateDatabase(resource)
                 }
                 resource
+            } else {
+                return if (daoHandlerImpl.isReposDBEmpty() || forceFetch) {
+                    Resource.error(ResourceError())
+                } else {
+                    Resource.success(daoHandlerImpl.getReposDataFromDB())
+                }
             }
         }
     }
+
+
+    private suspend fun isCacheStale(): Boolean =
+        System.currentTimeMillis() - getLastSavedTimeStamp() >= TWO_HOURS_MILLIS
 
     private suspend fun updateDatabase(resource: Resource<MutableList<GitReposModel>>) {
         resource.data?.let {
