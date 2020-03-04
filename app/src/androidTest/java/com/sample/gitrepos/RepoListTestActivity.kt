@@ -24,7 +24,6 @@ class RepoListTestActivity {
     @get: Rule
     val activityTestRule = ActivityTestRule<ReposListActivity>(ReposListActivity::class.java, true, false)
 
-
     @Test
     fun checkIfShimmerIsShown() {
         activityTestRule.launchActivity(Intent())
@@ -36,7 +35,6 @@ class RepoListTestActivity {
         activityTestRule.launchActivity(Intent())
         onView(withId(R.id.shimmer_view_container)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
-
 
     @Test
     fun checkIfErrorScreenIsNotShownByDefault() {
