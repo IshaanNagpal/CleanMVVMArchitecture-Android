@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.sample.gitrepos.extensions.toSingleEvent
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.usecases.ReposListUseCaseImpl
@@ -21,7 +22,7 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
     BaseViewModel(mApplication), ReposListViewModel {
 
     //This live data to be listened by view as the owner is Viewmodel
-    private val reposListLiveData by lazy { MutableLiveData<List<ListItemModel>>() }
+    private val reposListLiveData = MutableLiveData<List<ListItemModel>>().toSingleEvent()
 
     override fun getReposLiveData(): MutableLiveData<List<ListItemModel>> =
         savedStateHandle.getLiveData(REPOS_ACTIVITY_STATE)
@@ -32,13 +33,12 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
         viewModelScope.launch(Dispatchers.Main) {
             delay(3000) //Delay added to show shimmer for 3s
             val resource = reposListUseCaseImpl.getDataFromRepository(forceFetch)
-
             when (resource.status) {
 
                 Resource.Status.SUCCESS -> {
                     val reposItemViewList = getItemViewsFromData(resource.data)
                     savedStateHandle.set(REPOS_ACTIVITY_STATE, reposItemViewList)
-                    reposListLiveData.postValue(reposItemViewList)
+                    reposListLiveData.value = reposItemViewList
                     setSuccess()
                 }
 
