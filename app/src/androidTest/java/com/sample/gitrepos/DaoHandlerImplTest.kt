@@ -1,10 +1,10 @@
 package com.sample.gitrepos
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.sample.gitrepos.models.GitReposModel
+import com.sample.gitrepos.models.Timestamp
 import com.sample.gitrepos.persistence.DaoHandlerImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,13 +17,18 @@ class DaoHandlerImplTest: AndroidBaseTest() {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun checkForInsertionIntoDB() = runBlockingTest {
+    fun checkForInsertionIntoDB() = runBlocking {
         daoHandlerImpl.addReposDataIntoDB(mutableListOf())
         Assert.assertTrue(daoHandlerImpl.isReposDBEmpty())
+        Assert.assertTrue(daoHandlerImpl.getReposDataFromDB().isEmpty())
     }
 
-
-    private fun getList(): MutableList<GitReposModel> {
-        return mutableListOf()
+    @ExperimentalCoroutinesApi
+    @Test
+    fun checkForInsertionOfTimestamp() = runBlocking {
+        val currentTime = System.currentTimeMillis()
+        daoHandlerImpl.addTimeStampInDB(Timestamp(currentTime))
+        Assert.assertTrue(daoHandlerImpl.getTimeStampFromDB() != null)
+        Assert.assertEquals("The timestamp added to DB is successfully retrieved", currentTime, daoHandlerImpl.getTimeStampFromDB().timesTamp)
     }
 }
