@@ -15,7 +15,6 @@ class DaoHandlerImplTest: AndroidBaseTest() {
 
     private val daoHandlerImpl: DaoHandlerImpl by inject()
 
-    @ExperimentalCoroutinesApi
     @Test
     fun checkForInsertionIntoDB() = runBlocking {
         daoHandlerImpl.addReposDataIntoDB(mutableListOf())
@@ -23,7 +22,6 @@ class DaoHandlerImplTest: AndroidBaseTest() {
         Assert.assertTrue(daoHandlerImpl.getReposDataFromDB().isEmpty())
     }
 
-    @ExperimentalCoroutinesApi
     @Test
     fun checkForInsertionOfTimestamp() = runBlocking {
         val currentTime = System.currentTimeMillis()

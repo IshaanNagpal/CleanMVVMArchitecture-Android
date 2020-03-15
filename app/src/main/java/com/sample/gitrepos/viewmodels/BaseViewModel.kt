@@ -3,9 +3,6 @@ package com.sample.gitrepos.viewmodels
 import android.app.Application
 import androidx.databinding.ObservableField
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import org.koin.core.KoinComponent
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
 

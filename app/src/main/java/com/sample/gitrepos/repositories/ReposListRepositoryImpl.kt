@@ -1,6 +1,7 @@
 package com.sample.gitrepos.repositories
 
 
+import androidx.annotation.VisibleForTesting
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.models.Timestamp
 import com.sample.gitrepos.network.FetchRepoAPIService
@@ -37,7 +38,7 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
         }
     }
 
-
+    @VisibleForTesting
     private suspend fun isCacheStale(): Boolean =
         System.currentTimeMillis() - getLastSavedTimeStamp() >= TWO_HOURS_MILLIS
 

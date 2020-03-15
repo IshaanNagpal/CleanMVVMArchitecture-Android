@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.sample.gitrepos.extensions.toSingleEvent
-import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.usecases.ReposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.utility.REPOS_ACTIVITY_STATE
-import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,9 +32,8 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
             delay(3000) //Delay added to show shimmer for 3s
             val resource = reposListUseCaseImpl.getDataFromRepository(forceFetch)
             when (resource.status) {
-
                 Resource.Status.SUCCESS -> {
-                    val reposItemViewList = getItemViewsFromData(resource.data)
+                    val reposItemViewList = reposListUseCaseImpl.mapDataToViewItems(resource.data)
                     savedStateHandle.set(REPOS_ACTIVITY_STATE, reposItemViewList)
                     reposListLiveData.value = reposItemViewList
                     setSuccess()
@@ -47,14 +44,6 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
                 }
             }
         }
-    }
-
-    private fun getItemViewsFromData(reposList: MutableList<GitReposModel>?): List<ListItemModel> {
-        val reposItemViewList = mutableListOf<ListItemModel>()
-        reposList?.map { gitReposModel ->
-            reposItemViewList.add(ReposItemView(gitReposModel))
-        }
-        return reposItemViewList
     }
 
     fun swipeToRefreshCalled() {

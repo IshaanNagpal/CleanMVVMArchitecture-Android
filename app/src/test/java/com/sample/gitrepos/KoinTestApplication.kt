@@ -18,10 +18,6 @@ class KoinTestApplication: Application() {
         }
     }
 
-//    internal fun loadModules(modules: List<Module>) {
-//        loadKoinModules(modules)
-//    }
-
     override fun onTerminate() {
         super.onTerminate()
         stopKoin()
