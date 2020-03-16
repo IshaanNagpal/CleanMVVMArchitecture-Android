@@ -49,7 +49,7 @@ class ReposListUseCaseImplTest : CoroutineTest() {
             val itemModelList = reposListUseCaseImpl.mapDataToViewItems(gitReposList)
             Assert.assertFalse(itemModelList.isNullOrEmpty())
             Assert.assertTrue(itemModelList[0] is ReposItemView)
-            Assert.assertTrue((itemModelList[0] as ReposItemView).author == "author")
+            Assert.assertTrue((itemModelList[0] as ReposItemView).author == gitReposModel.author)
         }
     }
 
