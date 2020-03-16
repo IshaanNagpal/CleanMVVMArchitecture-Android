@@ -37,6 +37,10 @@ android {
         enabled = true
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     sourceSets {
         androidTest.java.srcDirs += "src/androidTest/java"
         test.java.srcDirs += "src/test/java"

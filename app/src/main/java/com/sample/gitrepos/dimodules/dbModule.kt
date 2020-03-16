@@ -11,3 +11,10 @@ val dbModule = module {
     single { get<AppDatabase>().timeStampDao() }
     single { DaoHandlerImpl(get(), get()) }
 }
+
+val mockDbModule = module {
+    single { Room.inMemoryDatabaseBuilder(get(), AppDatabase::class.java).allowMainThreadQueries().build() }
+    single { get<AppDatabase>().reposDao() }
+    single { get<AppDatabase>().timeStampDao() }
+    single { DaoHandlerImpl(get(), get()) }
+}
