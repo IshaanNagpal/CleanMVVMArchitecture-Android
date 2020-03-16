@@ -50,7 +50,7 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
 
     @VisibleForTesting
     private suspend fun getLastSavedTimeStamp(): Long {
-        return daoHandlerImpl.getTime()
+        return daoHandlerImpl.getTimeValue()
     }
 
 }

@@ -6,4 +6,5 @@ interface TimestampDaoHandler {
 
     suspend fun getTimeStampFromDB(): Timestamp
     suspend fun addTimeStampInDB(timestamp: Timestamp)
+    suspend fun getTimeValue(): Long
 }
