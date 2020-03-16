@@ -4,12 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 
-object ConnectionUtility {
-    private lateinit var application: Application
-
-    fun init(application: Application) {
-        this.application = application
-    }
+class ConnectionUtility(private val application: Application) {
 
     fun isInternetAvailable(): Boolean {
         val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

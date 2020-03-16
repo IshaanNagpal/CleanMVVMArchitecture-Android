@@ -11,8 +11,8 @@ import com.sample.gitrepos.persistence.DaoHandlerImpl
 import com.sample.gitrepos.utility.ConnectionUtility
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
 
-class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoAPIService, private val daoHandlerImpl: DaoHandlerImpl) : BaseRepository(),
-    ReposListRepository {
+class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoAPIService, private val daoHandlerImpl: DaoHandlerImpl,
+                              private val connectionUtility: ConnectionUtility) : BaseRepository(), ReposListRepository {
 
 
     override suspend fun getGitRepositories(forceFetch: Boolean): Resource<MutableList<GitReposModel>> {
@@ -20,7 +20,7 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
             if (daoHandlerImpl.isReposDBEmpty()) Resource.error(ResourceError())
             else Resource.success(daoHandlerImpl.getReposDataFromDB())
         } else {
-            if (ConnectionUtility.isInternetAvailable()) {
+            if (connectionUtility.isInternetAvailable()) {
                 val resource = safeApiCall(call = {
                     fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await()
                 })
@@ -38,7 +38,6 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
         }
     }
 
-    @VisibleForTesting
     private suspend fun isCacheStale(): Boolean =
         System.currentTimeMillis() - getLastSavedTimeStamp() >= TWO_HOURS_MILLIS
 
@@ -49,8 +48,9 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
         }
     }
 
+    @VisibleForTesting
     private suspend fun getLastSavedTimeStamp(): Long {
-        return daoHandlerImpl.getTimeStampFromDB().timesTamp
+        return daoHandlerImpl.getTime()
     }
 
 }

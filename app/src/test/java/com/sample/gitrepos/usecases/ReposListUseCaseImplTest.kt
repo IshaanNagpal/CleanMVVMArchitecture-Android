@@ -45,10 +45,11 @@ class ReposListUseCaseImplTest : CoroutineTest() {
     fun `verify the mapping of data to itemview returns list of item model when datalist is not null or empty`() {
         runBlocking {
             val gitReposModel = GitReposModel("author", "", forks = 1, language = "Kotlin", languageColor = "#ddd", name = "Demo", stars = 5, url = "")
-            val gitReposList = mutableListOf<GitReposModel>(gitReposModel)
+            val gitReposList = mutableListOf(gitReposModel)
             val itemModelList = reposListUseCaseImpl.mapDataToViewItems(gitReposList)
             Assert.assertFalse(itemModelList.isNullOrEmpty())
             Assert.assertTrue(itemModelList[0] is ReposItemView)
+            Assert.assertTrue((itemModelList[0] as ReposItemView).author == "author")
         }
     }
 

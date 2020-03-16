@@ -17,9 +17,6 @@ class ReposListApplication : MultiDexApplication() {
             androidContext(this@ReposListApplication)
             modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, dbModule))
         }
-
-
-        ConnectionUtility.init(this)
     }
 
 

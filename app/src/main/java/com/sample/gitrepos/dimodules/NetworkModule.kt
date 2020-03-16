@@ -2,6 +2,7 @@ package com.sample.gitrepos.dimodules
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.sample.gitrepos.BuildConfig
+import com.sample.gitrepos.utility.ConnectionUtility
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -10,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val networkModule = module {
     single { provideRetrofit(get()) }
     factory { provideOkHttpClient() }
+    single { ConnectionUtility(get()) }
 }
 
 
