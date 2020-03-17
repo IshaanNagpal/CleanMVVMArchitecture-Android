@@ -11,7 +11,6 @@ import org.robolectric.annotation.Config
 @Config(manifest=Config.NONE, application = KoinTestApplication::class)
 @RunWith(RobolectricTestRunner::class)
 open class BaseTest : AutoCloseKoinTest() {
-
     val context: KoinTestApplication = ApplicationProvider.getApplicationContext()
 
 }
