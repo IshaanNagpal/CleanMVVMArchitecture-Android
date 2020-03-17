@@ -1,4 +1,4 @@
-package com.sample.gitrepos
+package com.sample.gitrepos.extension
 
 import com.sample.gitrepos.extensions.toSafeString
 import org.junit.Assert
@@ -6,7 +6,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class StringExtTest {
+class IntExtTest {
 
     @Test
     fun `validate toSafeString extension`() {
