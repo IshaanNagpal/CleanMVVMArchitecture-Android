@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sample.gitrepos.utility.LiveEvent
 
-fun <T> LiveData<T>.toSingleEvent(): MutableLiveData<T> {
+fun <T> MutableLiveData<T>.toSingleEvent(): MutableLiveData<T> {
     val result = LiveEvent<T>()
     result.addSource(this) {
         result.value = it

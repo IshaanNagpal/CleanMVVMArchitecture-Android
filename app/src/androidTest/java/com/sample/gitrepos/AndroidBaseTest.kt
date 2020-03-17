@@ -12,8 +12,7 @@ import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 
 open class AndroidBaseTest: AutoCloseKoinTest() {
-    val reposApplicationContext = ApplicationProvider.getApplicationContext<ReposListApplication>()
-
+    private val reposApplicationContext = ApplicationProvider.getApplicationContext<ReposListApplication>()
 
     @Before
     fun beforeEach() {
@@ -21,7 +20,7 @@ open class AndroidBaseTest: AutoCloseKoinTest() {
         if(GlobalContext.getOrNull() == null) {
             startKoin {
                 androidContext(reposApplicationContext)
-                modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, mockDbModule))
+                modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, mockDbModule, utilityModule))
             }
         }
     }
