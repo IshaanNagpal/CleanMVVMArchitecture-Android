@@ -1,6 +1,7 @@
 package com.sample.gitrepos.viewmodels
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -20,8 +21,6 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
     BaseViewModel(mApplication), ReposListViewModel {
 
     //This live data to be listened by view as the owner is Viewmodel
-    private val reposListLiveData = MutableLiveData<List<ListItemModel>>().toSingleEvent()
-
     override fun getReposLiveData(): MutableLiveData<List<ListItemModel>> =
         savedStateHandle.getLiveData(REPOS_ACTIVITY_STATE)
 
@@ -35,7 +34,6 @@ class ReposListViewModelImpl(mApplication: Application, private val reposListUse
                 Resource.Status.SUCCESS -> {
                     val reposItemViewList = reposListUseCaseImpl.mapDataToViewItems(resource.data)
                     savedStateHandle.set(REPOS_ACTIVITY_STATE, reposItemViewList)
-                    reposListLiveData.value = reposItemViewList
                     setSuccess()
                 }
 

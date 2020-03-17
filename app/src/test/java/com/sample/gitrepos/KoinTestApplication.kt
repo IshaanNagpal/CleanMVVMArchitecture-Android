@@ -14,7 +14,7 @@ class KoinTestApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@KoinTestApplication)
-            modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, dbModule))
+            modules(listOf(viewModelModule, usecaseModule, repositoryModule, networkModule, gitReposListModule, dbModule, utilityModule))
         }
     }
 

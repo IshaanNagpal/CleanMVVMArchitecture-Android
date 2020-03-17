@@ -17,12 +17,10 @@ import org.koin.test.mock.declareMock
 
 class ReposListUseCaseImplTest : CoroutineTest() {
 
-
     private val reposListUseCaseImpl: ReposListUseCaseImpl by inject()
     private val errorResource = Resource.error<ResourceError>(ResourceError())
     private val successResource = Resource.success(mutableListOf<GitReposModel>())
     private val gitReposRepository: ReposListRepositoryImpl = declareMock {  }
-
 
     @Test
     fun `verify for usecase fetching data from repository will return in success or error`() {

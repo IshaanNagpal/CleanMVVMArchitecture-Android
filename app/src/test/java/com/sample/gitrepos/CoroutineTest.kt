@@ -8,6 +8,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
+import org.mockito.MockitoAnnotations
 
 open class CoroutineTest: BaseTest() {
 
@@ -19,6 +21,7 @@ open class CoroutineTest: BaseTest() {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
+        MockitoAnnotations.initMocks(this)
     }
 
     @ObsoleteCoroutinesApi

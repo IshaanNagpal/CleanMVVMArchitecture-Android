@@ -8,11 +8,11 @@ import com.sample.gitrepos.network.FetchRepoAPIService
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.network.ResourceError
 import com.sample.gitrepos.persistence.DaoHandlerImpl
-import com.sample.gitrepos.utility.ConnectionUtility
+import com.sample.gitrepos.utility.AppUtility
 import com.sample.gitrepos.utility.TWO_HOURS_MILLIS
 
 class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoAPIService, private val daoHandlerImpl: DaoHandlerImpl,
-                              private val connectionUtility: ConnectionUtility) : BaseRepository(), ReposListRepository {
+                              private val appUtility: AppUtility) : BaseRepository(), ReposListRepository {
 
 
     override suspend fun getGitRepositories(forceFetch: Boolean): Resource<MutableList<GitReposModel>> {
@@ -20,7 +20,7 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
             if (daoHandlerImpl.isReposDBEmpty()) Resource.error(ResourceError())
             else Resource.success(daoHandlerImpl.getReposDataFromDB())
         } else {
-            if (connectionUtility.isInternetAvailable()) {
+            if (appUtility.isInternetAvailable()) {
                 val resource = safeApiCall(call = {
                     fetchRepoWeatherWebservice.fetchRepositoriesFromURL().await()
                 })
@@ -39,18 +39,15 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
     }
 
     private suspend fun isCacheStale(): Boolean =
-        System.currentTimeMillis() - getLastSavedTimeStamp() >= TWO_HOURS_MILLIS
+        appUtility.getCurrentTime() - daoHandlerImpl.getTimeValue() >= TWO_HOURS_MILLIS
 
+
+    @VisibleForTesting
     private suspend fun updateDatabase(resource: Resource<MutableList<GitReposModel>>) {
         resource.data?.let {
             daoHandlerImpl.addReposDataIntoDB(it)
-            daoHandlerImpl.addTimeStampInDB(Timestamp(System.currentTimeMillis()))
+            daoHandlerImpl.addTimeStampInDB(Timestamp(appUtility.getCurrentTime()))
         }
-    }
-
-    @VisibleForTesting
-    private suspend fun getLastSavedTimeStamp(): Long {
-        return daoHandlerImpl.getTimeValue()
     }
 
 }
