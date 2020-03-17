@@ -3,8 +3,8 @@ package com.sample.gitrepos.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.nhaarman.mockito_kotlin.given
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.verify
 import com.sample.gitrepos.CoroutineTest
 import com.sample.gitrepos.extensions.toSafeString
 import com.sample.gitrepos.getValue
@@ -12,8 +12,10 @@ import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.network.ResourceError
 import com.sample.gitrepos.usecases.ReposListUseCaseImpl
+import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +38,7 @@ class ReposListViewModelImplTest : CoroutineTest() {
     private val successResource = Resource.success(mutableListOf<GitReposModel>())
 
     @Mock
-    private lateinit var viewStateObserver: Observer<Boolean>
+    private lateinit var viewStateObserver: Observer<List<ListItemModel>>
 
 
     @Test
@@ -78,6 +80,21 @@ class ReposListViewModelImplTest : CoroutineTest() {
 
     @Test
     fun `verify for viewmodel calling usecase will return success`() {
+        runBlocking {
+            //Given
+            given(reposListUseCaseImpl.getDataFromRepository(true)).will { successResource }
+            //When
+            val successResource = reposListUseCaseImpl.getDataFromRepository(true)
+            //Then
+            verify(reposListUseCaseImpl).getDataFromRepository(true)
+            Assert.assertTrue(successResource.status == Resource.Status.SUCCESS)
+        }
+    }
+
+    @Test
+    fun `verify for viewmodel will return success`() {
+
+        reposListViewModelImpl.getReposLiveData().observeForever(viewStateObserver)
         runBlocking {
             //Given
             given(reposListUseCaseImpl.getDataFromRepository(true)).will { successResource }

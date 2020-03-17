@@ -1,7 +1,7 @@
 package com.sample.gitrepos.usecases
 
-import com.nhaarman.mockito_kotlin.given
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.verify
 import com.sample.gitrepos.CoroutineTest
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
