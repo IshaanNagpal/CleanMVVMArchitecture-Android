@@ -18,7 +18,6 @@ class ExpandAndCollapseAdapter<T>(list: List<T>, private val onRowClick: ((Int)-
         if (actionVGroup != null) {
 
             val expandViewGroup = holder.getBinding().root.findViewById<View>(R.id.info_container_layout)
-            val actionVGroup = holder.getBinding().root.findViewById<View>(R.id.container_layout)
 
             if (mExpandedPosition == position) {
                 expandViewGroup.visibility = View.VISIBLE

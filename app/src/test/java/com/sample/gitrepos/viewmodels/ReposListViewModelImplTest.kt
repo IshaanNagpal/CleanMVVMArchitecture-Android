@@ -15,7 +15,6 @@ import com.sample.gitrepos.usecases.ReposListUseCaseImpl
 import com.sample.gitrepos.utility.ListItemModel
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -67,14 +66,8 @@ class ReposListViewModelImplTest : CoroutineTest() {
         reposListViewModelImpl.getReposLiveData().value = itemList
         Assert.assertNotNull(getValue(reposListViewModelImpl.getReposLiveData()))
         Assert.assertTrue((reposListViewModelImpl.getReposLiveData().value as List).isNotEmpty())
-        Assert.assertEquals(
-            gitReposModel.author,
-            ((reposListViewModelImpl.getReposLiveData().value as List)[0] as ReposItemView).author
-        )
-        Assert.assertEquals(
-            gitReposModel.stars.toSafeString(),
-            ((reposListViewModelImpl.getReposLiveData().value as List)[0] as ReposItemView).stars
-        )
+        Assert.assertEquals(gitReposModel.author, ((reposListViewModelImpl.getReposLiveData().value as List)[0] as ReposItemView).author)
+        Assert.assertEquals(gitReposModel.stars.toSafeString(), ((reposListViewModelImpl.getReposLiveData().value as List)[0] as ReposItemView).stars)
     }
 
 
@@ -91,20 +84,6 @@ class ReposListViewModelImplTest : CoroutineTest() {
         }
     }
 
-    @Test
-    fun `verify for viewmodel will return success`() {
-
-        reposListViewModelImpl.getReposLiveData().observeForever(viewStateObserver)
-        runBlocking {
-            //Given
-            given(reposListUseCaseImpl.getDataFromRepository(true)).will { successResource }
-            //When
-            val successResource = reposListUseCaseImpl.getDataFromRepository(true)
-            //Then
-            verify(reposListUseCaseImpl).getDataFromRepository(true)
-            Assert.assertTrue(successResource.status == Resource.Status.SUCCESS)
-        }
-    }
 
     @Test
     fun `verify for viewmodel calling usecase will return error`() {
