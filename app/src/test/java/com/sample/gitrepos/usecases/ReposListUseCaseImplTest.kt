@@ -7,7 +7,6 @@ import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.network.Resource
 import com.sample.gitrepos.network.ResourceError
 import com.sample.gitrepos.repositories.ReposListRepositoryImpl
-import com.sample.gitrepos.utility.ReposListStringHelper
 import com.sample.gitrepos.views.ReposItemView
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -22,7 +21,6 @@ class ReposListUseCaseImplTest : CoroutineTest() {
     private val errorResource = Resource.error<ResourceError>(ResourceError())
     private val successResource = Resource.success(mutableListOf<GitReposModel>())
     private val gitReposRepository: ReposListRepositoryImpl = declareMock {  }
-    private val reposListStringHelper: ReposListStringHelper = declareMock {  }
 
     @Test
     fun `verify for usecase fetching data from repository will return in success or error`() {
@@ -67,21 +65,6 @@ class ReposListUseCaseImplTest : CoroutineTest() {
         runBlocking {
             val itemModelList = reposListUseCaseImpl.mapDataToViewItems(mutableListOf())
             Assert.assertTrue(itemModelList.isEmpty())
-        }
-    }
-
-    @Test
-    fun `when timestamp is less than 30 minutes`() {
-        runBlocking {
-            //Given
-            given(gitReposRepository.getDeltaInReposRefreshTime()).willReturn(3200000)
-            given(reposListStringHelper.getDefaultString()).willReturn("")
-            given(reposListStringHelper.getStringLabelZeroToThirty()).willReturn("20 mins")
-            given(reposListStringHelper.getStringThirtyToSixty()).willReturn("40 mins")
-            given(reposListStringHelper.getStringAnHour()).willReturn("1 hour")
-            //Then
-            val refreshLabel = reposListUseCaseImpl.getLastRefreshedString()
-            verify(gitReposRepository).getDeltaInReposRefreshTime()
         }
     }
 

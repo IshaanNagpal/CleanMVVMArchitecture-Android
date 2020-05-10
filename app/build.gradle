@@ -39,7 +39,6 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-//        unitTests.includeAndroidResources = true
     }
 
     sourceSets {
@@ -104,8 +103,6 @@ dependencies {
     //Mockito
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation 'android.arch.core:core-testing:2.1.0'
-
-    //AndroidX Test
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:core:1.2.0'
     testImplementation 'androidx.test:core:1.2.0'

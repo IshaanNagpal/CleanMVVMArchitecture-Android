@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Trending</string>
     <string name="error_title">Something went wrong..</string>
     <string name="error_subtitle">An alien is probably blocking your signal.</string>
