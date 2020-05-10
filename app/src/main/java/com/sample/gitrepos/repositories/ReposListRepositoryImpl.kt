@@ -1,6 +1,7 @@
 package com.sample.gitrepos.repositories
 
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.sample.gitrepos.models.GitReposModel
 import com.sample.gitrepos.models.Timestamp
@@ -36,6 +37,10 @@ class ReposListRepositoryImpl(private val fetchRepoWeatherWebservice: FetchRepoA
                 }
             }
         }
+    }
+
+    override suspend fun getDeltaInReposRefreshTime(): Long {
+        return appUtility.getCurrentTime() - daoHandlerImpl.getTimeValue()
     }
 
     private suspend fun isCacheStale(): Boolean =

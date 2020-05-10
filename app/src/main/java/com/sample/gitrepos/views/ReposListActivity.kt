@@ -1,6 +1,7 @@
 package com.sample.gitrepos.views
 
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -72,6 +73,11 @@ class ReposListActivity : BaseActivity() {
                 swipe_container.isRefreshing = false
                 setDataOnList(it)
             }
+        })
+
+
+        reposListViewModelImpl.getReposRefreshLabel().observe(this, Observer {
+            Log.v("Refresh label: ", it)
         })
     }
 
